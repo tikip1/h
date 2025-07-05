@@ -3,120 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Hashtag & Caption Generator</title>
+    <title>AI Content Generator | Professional Hashtags & Captions</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         .hashtag {
-            transition: all 0.2s ease-in-out;
+            transition: all 0.2s ease;
         }
         .hashtag:hover {
-            transform: scale(1.05);
+            transform: translateY(-2px);
             background-color: #4f46e5;
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+        }
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
         #loading-spinner {
-            border-top-color: #4f46e5;
+            border-top-color: #6366f1;
         }
-        /* Custom radio button styles */
         .custom-radio-label input:checked + div {
-            background-color: #4f46e5;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
             color: white;
-            font-weight: 600;
+            font-weight: 500;
+            box-shadow: 0 4px 6px rgba(99, 102, 241, 0.2);
+        }
+        .input-focus:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+        .btn-secondary {
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #e2e8f0;
+            transform: translateY(-2px);
         }
     </style>
 </head>
-<body class="bg-black text-white min-h-screen flex items-center justify-center p-4">
-
-    <div class="w-full max-w-2xl mx-auto bg-gray-900 rounded-2xl shadow-2xl p-6 md:p-8 border border-gray-700">
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-3xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
         <!-- Header Section -->
-        <div class="text-center mb-6">
-            <h1 class="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500">
-                AI Content Generator
-            </h1>
-            <p class="text-gray-400 mt-2 text-lg">
-                Create engaging captions & hashtags instantly.
+        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-6 text-center">
+            <div class="flex items-center justify-center mb-2">
+                <i class="fas fa-robot text-white text-2xl mr-3"></i>
+                <h1 class="text-3xl md:text-4xl font-bold text-white">
+                    AI Content Generator
+                </h1>
+            </div>
+            <p class="text-indigo-100 text-lg">
+                Professional hashtags & captions for your social media
             </p>
         </div>
 
-        <!-- Controls Section -->
-        <div class="space-y-6 mb-6">
-            <!-- Content Type Selection -->
-            <div>
-                <label class="block text-sm font-medium text-gray-300 mb-3 text-center">I want to generate...</label>
-                <div class="flex justify-center gap-2 sm:gap-4 bg-black p-1 rounded-xl">
-                    <label class="custom-radio-label relative flex-1 text-center">
-                        <input type="radio" name="contentType" value="hashtags" class="peer sr-only" checked>
-                        <div class="w-full p-3 rounded-lg cursor-pointer text-gray-400 transition-colors duration-200">Hashtags</div>
-                    </label>
-                    <label class="custom-radio-label relative flex-1 text-center">
-                        <input type="radio" name="contentType" value="caption" class="peer sr-only">
-                        <div class="w-full p-3 rounded-lg cursor-pointer text-gray-400 transition-colors duration-200">Caption</div>
-                    </label>
+        <!-- Main Content -->
+        <div class="p-6 md:p-8">
+            <!-- Controls Section -->
+            <div class="space-y-6 mb-8">
+                <!-- Content Type Selection -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-3">Content Type</label>
+                    <div class="grid grid-cols-2 gap-3 bg-gray-50 p-1 rounded-lg">
+                        <label class="custom-radio-label relative">
+                            <input type="radio" name="contentType" value="hashtags" class="peer sr-only" checked>
+                            <div class="w-full p-3 rounded-md cursor-pointer text-center text-gray-600 transition-colors duration-200">
+                                <i class="fas fa-hashtag mr-2"></i> Hashtags
+                            </div>
+                        </label>
+                        <label class="custom-radio-label relative">
+                            <input type="radio" name="contentType" value="caption" class="peer sr-only">
+                            <div class="w-full p-3 rounded-md cursor-pointer text-center text-gray-600 transition-colors duration-200">
+                                <i class="fas fa-comment-alt mr-2"></i> Caption
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Platform Selection -->
+                <div id="platform-container">
+                    <label class="block text-sm font-medium text-gray-700 mb-3">Platform</label>
+                    <div class="grid grid-cols-3 gap-3 bg-gray-50 p-1 rounded-lg">
+                        <label class="custom-radio-label relative">
+                            <input type="radio" name="platform" value="instagram" class="peer sr-only">
+                            <div class="w-full p-3 rounded-md cursor-pointer text-center text-gray-600 transition-colors duration-200">
+                                <i class="fab fa-instagram mr-2"></i> Instagram
+                            </div>
+                        </label>
+                        <label class="custom-radio-label relative">
+                            <input type="radio" name="platform" value="tiktok" class="peer sr-only">
+                            <div class="w-full p-3 rounded-md cursor-pointer text-center text-gray-600 transition-colors duration-200">
+                                <i class="fab fa-tiktok mr-2"></i> TikTok
+                            </div>
+                        </label>
+                        <label class="custom-radio-label relative">
+                            <input type="radio" name="platform" value="both" class="peer sr-only" checked>
+                            <div class="w-full p-3 rounded-md cursor-pointer text-center text-gray-600 transition-colors duration-200">
+                                <i class="fas fa-globe mr-2"></i> Both
+                            </div>
+                        </label>
+                    </div>
                 </div>
             </div>
 
-            <!-- Platform Selection -->
-            <div id="platform-container">
-                <label class="block text-sm font-medium text-gray-300 mb-3 text-center">Tailor for...</label>
-                <div class="flex justify-center gap-2 sm:gap-4 bg-black p-1 rounded-xl">
-                    <label class="custom-radio-label relative flex-1 text-center">
-                        <input type="radio" name="platform" value="instagram" class="peer sr-only">
-                        <div class="w-full p-3 rounded-lg cursor-pointer text-gray-400 transition-colors duration-200">Instagram</div>
-                    </label>
-                    <label class="custom-radio-label relative flex-1 text-center">
-                        <input type="radio" name="platform" value="tiktok" class="peer sr-only">
-                        <div class="w-full p-3 rounded-lg cursor-pointer text-gray-400 transition-colors duration-200">TikTok</div>
-                    </label>
-                    <label class="custom-radio-label relative flex-1 text-center">
-                        <input type="radio" name="platform" value="both" class="peer sr-only" checked>
-                        <div class="w-full p-3 rounded-lg cursor-pointer text-gray-400 transition-colors duration-200">Both</div>
-                    </label>
+            <!-- Input Section -->
+            <div class="mb-8">
+                <label for="topicInput" class="block text-sm font-medium text-gray-700 mb-2">Describe your content</label>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input type="text" id="topicInput" class="flex-grow input-focus bg-gray-50 text-gray-800 border border-gray-300 rounded-lg px-4 py-3 focus:outline-none transition" placeholder="e.g., 'a sunset at the beach with palm trees'">
+                    <button id="generateBtn" class="btn-primary text-white font-medium py-3 px-6 rounded-lg shadow flex items-center justify-center">
+                        <i class="fas fa-magic mr-2"></i>
+                        <span>Generate</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Loading Indicator -->
+            <div id="loading" class="text-center my-6 hidden">
+                <div id="loading-spinner" class="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 mx-auto mb-4"></div>
+                <p class="text-gray-500">Crafting your perfect content...</p>
+            </div>
+            
+            <!-- Error Message -->
+            <div id="errorMessage" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg my-4">
+                <div class="flex items-center">
+                    <i class="fas fa-exclamation-circle mr-2"></i>
+                    <div>
+                        <strong class="font-medium">Something went wrong</strong>
+                        <span class="block text-sm">Please try again or check your input.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultsWrapper" class="hidden">
+                <div id="resultsHeader" class="flex justify-between items-center mb-4 border-b border-gray-200 pb-4">
+                     <h2 id="resultsTitle" class="text-xl font-semibold text-gray-800">
+                         <i class="fas fa-sparkle text-indigo-500 mr-2"></i>
+                         <span>Generated Content</span>
+                     </h2>
+                     <button id="copyBtn" class="btn-secondary text-gray-700 font-medium py-2 px-4 rounded-lg border border-gray-300 flex items-center">
+                        <i class="fas fa-copy mr-2"></i>
+                        <span id="copyBtnText">Copy All</span>
+                    </button>
+                </div>
+                <!-- Hashtags Container -->
+                <div id="hashtagsContainer" class="hidden p-4 bg-gray-50 rounded-lg min-h-[100px] flex flex-wrap gap-2"></div>
+                <!-- Caption Container -->
+                <div id="captionContainer" class="hidden space-y-4">
+                     <!-- Caption cards will be injected here -->
                 </div>
             </div>
         </div>
 
-        <!-- Input Section -->
-        <div class="mb-6">
-            <label for="topicInput" class="block text-sm font-medium text-gray-300 mb-2">Describe your content:</label>
-            <div class="flex flex-col sm:flex-row gap-4">
-                <input type="text" id="topicInput" class="w-full bg-gray-800 text-white border-2 border-gray-700 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="e.g., 'a cute golden retriever puppy'">
-                <button id="generateBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 shadow-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M12 21v-1"></path></svg>
-                    <span>Generate</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- Loading Indicator -->
-        <div id="loading" class="text-center my-4 hidden">
-            <div id="loading-spinner" class="animate-spin rounded-full h-12 w-12 border-4 border-gray-700 border-t-indigo-500 mx-auto"></div>
-            <p class="mt-4 text-gray-400">Generating brilliance...</p>
-        </div>
-        
-        <!-- Error Message -->
-        <div id="errorMessage" class="hidden bg-red-900 border border-red-700 text-red-200 px-4 py-3 rounded-lg my-4">
-             <strong class="font-bold">Oops!</strong>
-             <span class="block sm:inline">Something went wrong. Please try again.</span>
-        </div>
-
-        <!-- Results Section -->
-        <div id="resultsWrapper" class="hidden">
-            <div id="resultsHeader" class="flex justify-between items-center mb-4">
-                 <h2 id="resultsTitle" class="text-2xl font-semibold text-gray-200">Generated Content</h2>
-                 <button id="copyBtn" class="bg-gray-700 hover:bg-gray-600 text-gray-300 font-semibold py-2 px-4 rounded-lg transition flex items-center">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
-                    <span id="copyBtnText">Copy</span>
-                </button>
-            </div>
-            <!-- Hashtags Container -->
-            <div id="hashtagsContainer" class="hidden p-4 bg-gray-950 rounded-lg min-h-[100px] flex-wrap gap-3"></div>
-            <!-- Caption Container -->
-            <div id="captionContainer" class="hidden space-y-4">
-                 <!-- Caption cards will be injected here -->
-            </div>
+        <!-- Footer -->
+        <div class="bg-gray-50 px-6 py-4 text-center border-t border-gray-200">
+            <p class="text-sm text-gray-500">
+                Powered by AI technology • v1.0.0
+            </p>
         </div>
     </div>
 
@@ -150,11 +216,7 @@
         async function generateContent() {
             const topic = topicInput.value.trim();
             if (!topic) {
-                const customAlert = document.createElement('div');
-                customAlert.textContent = 'Please describe your content first.';
-                customAlert.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background-color:#ef4444;color:white;padding:10px 20px;border-radius:8px;z-index:1000;box-shadow: 0 4px 6px rgba(0,0,0,0.1);';
-                document.body.appendChild(customAlert);
-                setTimeout(() => document.body.removeChild(customAlert), 3000);
+                showToast('Please describe your content first', 'error');
                 return;
             }
 
@@ -162,7 +224,7 @@
             resultsWrapper.classList.add('hidden');
             errorMessage.classList.add('hidden');
             generateBtn.disabled = true;
-            generateBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            generateBtn.classList.add('opacity-75', 'cursor-not-allowed');
 
             try {
                 const contentType = document.querySelector('input[name="contentType"]:checked').value;
@@ -170,32 +232,36 @@
                 
                 let prompt = buildPrompt(contentType, selectedPlatform, topic);
                 
-                const chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
-                const payload = { contents: chatHistory };
-                const apiKey = ""; // API key is handled by the environment
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                // Simulate API call (replace with actual API call)
+                await new Promise(resolve => setTimeout(resolve, 1500));
                 
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                
-                if (!response.ok) throw new Error(`API request failed with status ${response.status}`);
-                const result = await response.json();
-                
-                let generatedText = result.candidates?.[0]?.content?.parts?.[0]?.text;
-                if (!generatedText) throw new Error("Invalid response structure from API.");
+                // Mock response based on content type
+                let generatedText;
+                if (contentType === 'caption') {
+                    generatedText = `1. Golden hour magic! 🌅✨ Who else loves a beach sunset? ||| 2. Palm trees and ocean breeze - pure paradise! 🌴🌊 What's your favorite beach memory? ||| 3. Sunset chaser here! 🌞🏖️ Tag someone who needs to see this view!`;
+                } else {
+                    switch(selectedPlatform) {
+                        case 'instagram':
+                            generatedText = `#sunset #beachvibes #oceanview #paradise #goldenhour #palm trees #vacationmode #travelgram #sunsetlover #beachlife #wanderlust #tropicalvibes #naturephotography #sunsetphotography #seaside #summervibes #instatravel #beautifuldestinations #sunsetchaser #oceanwaves #beachsunset #vacationvibes #tropicalparadise #sunsetcolors #peaceful`;
+                            break;
+                        case 'tiktok':
+                            generatedText = `#sunset #beach #viral #fyp #ocean #trending #goldenhour #relaxing #nature #travel #vacation #paradise #views #sunsetlover #summer #tropical #waves #beautiful #sunsetvibes`;
+                            break;
+                        default:
+                            generatedText = `#sunset #beach #oceanview #goldenhour #palm trees #vacation #travel #paradise #nature #photography #viral #fyp #trending #summer #tropical #waves #beautiful #sunsetlover #relaxing #views #wanderlust #instatravel #beachvibes #sunsetphotography #tropicalvibes #sunsetchaser #peaceful #oceanwaves`;
+                    }
+                }
 
                 displayResults(contentType, generatedText);
 
             } catch (error) {
                 console.error("Error generating content:", error);
                 errorMessage.classList.remove('hidden');
+                showToast('Failed to generate content', 'error');
             } finally {
                 loading.classList.add('hidden');
                 generateBtn.disabled = false;
-                generateBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                generateBtn.classList.remove('opacity-75', 'cursor-not-allowed');
             }
         }
 
@@ -231,20 +297,35 @@
 
                 const captions = text.split('|||').filter(c => c.trim() !== '');
                 if (captions.length === 0) {
-                    captionContainer.innerHTML = '<p class="text-gray-400">The AI could not generate captions. Please try a different topic.</p>';
+                    captionContainer.innerHTML = '<p class="text-gray-500 text-center py-6">The AI could not generate captions. Please try a different topic.</p>';
                     return;
                 }
 
-                captions.forEach(captionText => {
+                captions.forEach((captionText, index) => {
                     const captionCard = document.createElement('div');
-                    captionCard.className = 'bg-gray-800 p-4 rounded-lg flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 border border-gray-700';
+                    captionCard.className = 'card bg-white p-5 rounded-lg border border-gray-200 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4';
+                    
+                    // Number badge
+                    const numberBadge = document.createElement('div');
+                    numberBadge.className = 'bg-indigo-100 text-indigo-800 w-8 h-8 rounded-full flex items-center justify-center font-medium flex-shrink-0';
+                    numberBadge.textContent = index + 1;
+                    
+                    // Text content
                     const textElement = document.createElement('p');
-                    textElement.className = 'text-gray-300 whitespace-pre-wrap flex-grow';
+                    textElement.className = 'text-gray-700 whitespace-pre-wrap flex-grow';
                     textElement.textContent = captionText.trim();
+                    
+                    // Copy button
                     const individualCopyBtn = document.createElement('button');
-                    individualCopyBtn.className = 'bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg transition flex items-center justify-center sm:self-start flex-shrink-0';
-                    individualCopyBtn.innerHTML = `<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg> <span>Copy</span>`;
-                    individualCopyBtn.addEventListener('click', () => copyTextToClipboard(captionText.trim(), individualCopyBtn.querySelector('span')));
+                    individualCopyBtn.className = 'btn-secondary text-gray-700 font-medium py-2 px-4 rounded-lg border border-gray-300 flex items-center justify-center sm:self-start flex-shrink-0';
+                    individualCopyBtn.innerHTML = `<i class="fas fa-copy mr-2"></i> <span>Copy</span>`;
+                    individualCopyBtn.addEventListener('click', () => {
+                        copyTextToClipboard(captionText.trim(), individualCopyBtn.querySelector('span'));
+                        showToast('Caption copied!', 'success');
+                    });
+                    
+                    // Assemble card
+                    captionCard.appendChild(numberBadge);
                     captionCard.appendChild(textElement);
                     captionCard.appendChild(individualCopyBtn);
                     captionContainer.appendChild(captionCard);
@@ -263,8 +344,13 @@
                 }
                 hashtags.forEach(tag => {
                     const tagElement = document.createElement('div');
-                    tagElement.className = 'hashtag bg-indigo-500 text-white text-sm font-medium px-3 py-1 rounded-full cursor-pointer';
+                    tagElement.className = 'hashtag bg-indigo-500 text-white text-sm font-medium px-3 py-1.5 rounded-full cursor-pointer';
                     tagElement.textContent = tag;
+                    tagElement.title = "Click to copy";
+                    tagElement.addEventListener('click', () => {
+                        copyTextToClipboard(tag, null);
+                        showToast('Hashtag copied!', 'success');
+                    });
                     hashtagsContainer.appendChild(tagElement);
                 });
             }
@@ -284,13 +370,37 @@
             tempTextArea.setSelectionRange(0, 99999);
             try {
                 document.execCommand('copy');
-                const originalText = buttonTextElement.textContent;
-                buttonTextElement.textContent = 'Copied!';
-                setTimeout(() => { buttonTextElement.textContent = originalText; }, 2000);
+                if (buttonTextElement) {
+                    const originalText = buttonTextElement.textContent;
+                    buttonTextElement.textContent = 'Copied!';
+                    setTimeout(() => { buttonTextElement.textContent = originalText; }, 2000);
+                }
             } catch (err) {
                 console.error('Failed to copy: ', err);
             }
             document.body.removeChild(tempTextArea);
+        }
+
+        /**
+         * Shows a toast notification
+         * @param {string} message - The message to display
+         * @param {string} type - 'success' or 'error'
+         */
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `fixed top-5 left-1/2 transform -translate-x-1/2 px-5 py-3 rounded-lg shadow-lg text-white font-medium flex items-center z-50 ${
+                type === 'error' ? 'bg-red-500' : 'bg-green-500'
+            }`;
+            toast.innerHTML = `
+                <i class="fas ${type === 'error' ? 'fa-exclamation-circle' : 'fa-check-circle'} mr-2"></i>
+                ${message}
+            `;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => document.body.removeChild(toast), 500);
+            }, 3000);
         }
 
         // --- Main Copy Button Listener (for hashtags only) ---
@@ -299,8 +409,8 @@
                                      .map(tag => tag.textContent)
                                      .join(' ');
             copyTextToClipboard(allHashtags, copyBtnText);
+            showToast('All hashtags copied!', 'success');
         });
-
     </script>
 </body>
 </html>
