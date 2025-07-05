@@ -1,5 +1,5 @@
 // In your HTML (temporary for development only)
-const GEMINI_KEY = "YOUR_RESTRICTED_KEY"; // ⚠️ Never commit this!
+const GEMINI_KEY = "AIzaSyDF_-8sNPoCD4d00vqFXNekomEtxMvd1M4"; // ⚠️ Never commit this!
 
 async function callGemini(prompt) {
   const response = await fetch(
