@@ -1,200 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Upscaler</title>
-    <link rel="stylesheet" href="/static/style.css">
+  <meta charset="UTF-8">
+  <title>Live Currency Converter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="shortcut icon" href="icons/favicon.png">
 </head>
 <body>
-    <div class="container">
-        <h1>Image Upscaler</h1>
-        
-        <div class="upload-area" id="uploadArea">
-            <input type="file" id="fileInput" accept="image/*">
-            <label for="fileInput" id="fileLabel">
-                <span>Choose an image or drag here</span>
-            </label>
-            <div class="preview-container">
-                <img id="preview" alt="Preview will appear here">
-            </div>
-        </div>
-        
-        <div class="controls">
-            <div class="form-group">
-                <label for="scale">Upscale Factor:</label>
-                <select id="scale">
-                    <option value="2">2x</option>
-                    <option value="3">3x</option>
-                    <option value="4" selected>4x</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label class="checkbox">
-                    <input type="checkbox" id="faceEnhance">
-                    <span>Enhance Faces</span>
-                </label>
-            </div>
-            
-            <button id="upscaleBtn" disabled>Upscale Image</button>
-        </div>
-        
-        <div class="status" id="status"></div>
-        <div class="download-container" id="downloadContainer" style="display: none;">
-            <h3>Processing Complete!</h3>
-            <a id="downloadLink" class="download-btn">Download Upscaled Image</a>
-        </div>
+  <h1>Currency Converter</h1>
+
+  <form id="converter">
+    <div class="field">
+      <label>Amount</label>
+      <input type="number" id="amount" value="1" min="0" step="any" required>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const fileInput = document.getElementById('fileInput');
-            const fileLabel = document.getElementById('fileLabel');
-            const preview = document.getElementById('preview');
-            const upscaleBtn = document.getElementById('upscaleBtn');
-            const scaleSelect = document.getElementById('scale');
-            const faceEnhanceCheckbox = document.getElementById('faceEnhance');
-            const statusDiv = document.getElementById('status');
-            const downloadContainer = document.getElementById('downloadContainer');
-            const downloadLink = document.getElementById('downloadLink');
-            const uploadArea = document.getElementById('uploadArea');
-            
-            let currentFilename = null;
-            let checkStatusInterval = null;
-            
-            // Handle file selection
-            fileInput.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    handleFileSelection(file);
-                }
-            });
-            
-            // Handle drag and drop
-            uploadArea.addEventListener('dragover', function(e) {
-                e.preventDefault();
-                uploadArea.classList.add('dragover');
-            });
-            
-            uploadArea.addEventListener('dragleave', function() {
-                uploadArea.classList.remove('dragover');
-            });
-            
-            uploadArea.addEventListener('drop', function(e) {
-                e.preventDefault();
-                uploadArea.classList.remove('dragover');
-                
-                if (e.dataTransfer.files.length) {
-                    handleFileSelection(e.dataTransfer.files[0]);
-                }
-            });
-            
-            function handleFileSelection(file) {
-                // Validate file type
-                if (!file.type.match('image.*')) {
-                    showStatus('Please select an image file (JPEG, PNG, etc.)', 'error');
-                    return;
-                }
-                
-                // Validate file size (client-side check)
-                if (file.size > 16 * 1024 * 1024) {
-                    showStatus('File size exceeds 16MB limit', 'error');
-                    return;
-                }
-                
-                currentFilename = file.name;
-                
-                // Update UI
-                fileLabel.querySelector('span').textContent = file.name;
-                upscaleBtn.disabled = false;
-                
-                // Show preview
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            }
-            
-            // Handle upscale button click
-            upscaleBtn.addEventListener('click', function() {
-                if (!fileInput.files.length) {
-                    showStatus('Please select an image first', 'error');
-                    return;
-                }
-                
-                const file = fileInput.files[0];
-                const scale = scaleSelect.value;
-                const faceEnhance = faceEnhanceCheckbox.checked;
-                
-                // Create FormData to send file and parameters
-                const formData = new FormData();
-                formData.append('file', file);
-                formData.append('scale', scale);
-                formData.append('face_enhance', faceEnhance);
-                
-                showStatus('Uploading and processing image...', 'info');
-                upscaleBtn.disabled = true;
-                
-                // Send to backend
-                fetch('/upload', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        throw new Error(data.error);
-                    }
-                    
-                    showStatus('Image is being processed. Please wait...', 'info');
-                    currentFilename = data.filename;
-                    
-                    // Start checking status periodically
-                    checkStatusInterval = setInterval(checkProcessingStatus, 3000);
-                })
-                .catch(error => {
-                    showStatus('Error: ' + error.message, 'error');
-                    upscaleBtn.disabled = false;
-                });
-            });
-            
-            function checkProcessingStatus() {
-                if (!currentFilename) return;
-                
-                fetch(`/status/${currentFilename}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        throw new Error(data.error);
-                    }
-                    
-                    if (data.status === 'completed') {
-                        clearInterval(checkStatusInterval);
-                        showStatus('Processing complete!', 'success');
-                        downloadContainer.style.display = 'block';
-                        downloadLink.href = `/download/${data.processed_filename}`;
-                    } else if (data.status === 'processing') {
-                        showStatus('Image is being processed. Please wait...', 'info');
-                    } else {
-                        showStatus('Image is in queue for processing', 'info');
-                    }
-                })
-                .catch(error => {
-                    clearInterval(checkStatusInterval);
-                    showStatus('Error checking status: ' + error.message, 'error');
-                    upscaleBtn.disabled = false;
-                });
-            }
-            
-            function showStatus(message, type) {
-                statusDiv.textContent = message;
-                statusDiv.className = `status ${type}`;
-                statusDiv.style.display = 'block';
-            }
-        });
-    </script>
+    <div class="field">
+      <label>From</label>
+      <select id="from"></select>
+    </div>
+
+    <button id="swap" type="button" aria-label="Swap currencies">⇄</button>
+
+    <div class="field">
+      <label>To</label>
+      <select id="to"></select>
+    </div>
+
+    <button id="convertBtn">Convert</button>
+  </form>
+
+  <p id="result"></p>
+
+  <footer>
+    <small>Rates are fetched from <a href="https://exchangerate.host/" target="_blank">exchangerate.host</a></small>
+  </footer>
+
+  <script src="app.js"></script>
 </body>
 </html>
