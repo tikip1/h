@@ -1,0 +1,5 @@
+{
+  "name": "AI Bulk Photo Tagger",
+  "description": "Automatically generate titles and comma-separated tags for multiple photos at once. Upload your images and let the Gemini API create compelling content in bulk.",
+  "requestFramePermissions": []
+}
